@@ -1,2 +1,10 @@
-# desktop-assitant
-This project was made for learning to work with high-level python libraries and code. It's purpose is to have a small popping up windows in the side of desktop to show you specific things.
+# Desktop Assitant
+
+A python GUI app to automate the reprtitive actions, and make your work easier, faster
+and enjoyable.
+
+## Features
+
+- Data processing and requests making.  
+- Auto detection of marked text and clipboard content for further actions.
+- The ability to add functions and actions to the app.
