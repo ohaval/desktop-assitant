@@ -3,12 +3,21 @@ class IP:
         for key, value in ip_data.items():
             setattr(self, key, value)
 
-    def minimal_info(self):
-        keys = ["country_name", "isp", "company", "city"]
-        info = {}
-        for key in keys:
-            info.update({key: getattr(self, key)})
+    def summary(self, level="Minimal"):
+        if level == "Minimal":
+            attributes = ["ip", "country_name", "isp", "company", "city"]
+        else:
+            attributes = []
 
-        return info
+        text = ""
+        for attribute in attributes:
+            text += f"{(attribute + ':').ljust(20)} {getattr(self, attribute)}\n"
+        print(text)
+        return text
+
+
+
+
+
 
 
