@@ -1,6 +1,6 @@
 # Desktop Assitant
 
-A python GUI app to automate the reprtitive actions, and make your work easier, faster
+A python GUI app to automate the repetitive actions, and make your work easier, faster
 and enjoyable.
 
 ## Features
