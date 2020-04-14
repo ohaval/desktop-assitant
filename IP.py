@@ -11,7 +11,12 @@ class IP:
 
         text = ""
         for attribute in attributes:
-            text += f"{(attribute + ':').ljust(20)} {getattr(self, attribute)}\n"
+            if attribute == "ip":
+                text += f"{'IP:'.ljust(9)}{getattr(self, attribute)}\n"
+            elif attribute == "country_name":
+                text += f"{'Country:'.ljust(9)}{getattr(self, attribute)}\n"
+            else:
+                text += f"{(attribute + ':').ljust(9)}{getattr(self, attribute)}\n"
         print(text)
         return text
 

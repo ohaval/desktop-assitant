@@ -1,4 +1,4 @@
 .idea
 __pycache__
-tmp.py
 draft/
+tmp*
