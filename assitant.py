@@ -6,6 +6,9 @@ from IP import IP
 import re
 import ipaddress
 from bs4 import BeautifulSoup
+import os
+import importlib
+from functools import partial
 
 
 MAC_URL = "https://macvendors.com/query/{mac}"
@@ -21,6 +24,8 @@ TEXT_WIDTH = 200
 
 headers = {'User-Agent': USER_AGENT}
 
+method_pointer = ""
+
 
 def show_error(text):
     label = tk.Label(error_frame, text=text, bg="black", fg="red")
@@ -28,15 +33,15 @@ def show_error(text):
     label.after(ERRORS_ALIVE_TIME, label.destroy)
 
 
-def get_values_from_clip(key):
-    clip_content = cp.paste()
+def extract_values(data, key):
+    """Possible keys are: ip, mac"""
 
     if key == "ip":
-        matches = re.findall(IP_REGEX, clip_content)
+        matches = re.findall(IP_REGEX, data)
         matches = set(filter(lambda ip: False if ipaddress.ip_address(ip).is_private else True, matches))
 
     elif key == "mac":
-        matches = set(re.findall(MAC_REGEX, clip_content))
+        matches = set(re.findall(MAC_REGEX, data))
 
     else:
         # For now
@@ -48,9 +53,8 @@ def get_values_from_clip(key):
     return matches
 
 
-def mac_search(mac_addresses=None):
-    if not mac_addresses:
-        mac_addresses = get_values_from_clip(key="mac")
+def mac_search(input_):
+    mac_addresses = extract_values(input_[0], "mac")
 
     if mac_addresses:
         text = ""
@@ -71,15 +75,14 @@ def mac_search(mac_addresses=None):
         text_obj.pack()
 
 
-def ip_search(ip_addresses=None):
-    if not ip_addresses:
-        ip_addresses = get_values_from_clip(key="ip")
+def ip_search(input_):
+    ip_addresses = extract_values(input_[0], "ip")
 
     if ip_addresses:
-        summary = ""
+        text = ""
         for ip in ip_addresses:
-            if summary:
-                summary += "\n"
+            if text:
+                text += "\n"
 
             payload = {"ip": ip}
             page = requests.post(IP_URL, headers=headers, data=payload)
@@ -94,19 +97,15 @@ def ip_search(ip_addresses=None):
                 continue
 
             ip = IP(response_data)
-            summary += ip.summary()
+            text += ip.summary()
 
-        text_obj = tk.Text(main_frame, height=summary.count("\n"), width=TEXT_WIDTH, bg="#00cccc")
-        text_obj.insert(tk.INSERT, summary)
+        text_obj = tk.Text(main_frame, height=text.count("\n"), width=TEXT_WIDTH, bg="#00cccc")
+        text_obj.insert(tk.INSERT, text)
         text_obj.pack()
 
 
-def google_search(results_count=3):
-    text_box_value = tb_input.get()
-    if text_box_value:
-        term = text_box_value
-    else:
-        term = cp.paste()
+def google_search(input_, results_count=3):
+    term = input_[0]
 
     page = requests.get(GOOGLE_URL.format(term=term), headers=headers)
     if page.status_code != 200:
@@ -114,7 +113,7 @@ def google_search(results_count=3):
         return
 
     soup = BeautifulSoup(page.content, 'lxml')
-    results = soup.find_all('div', class_='r')[:3]
+    results = soup.find_all('div', class_='r')[:results_count]
 
     text = ""
     additional_nl = 0
@@ -135,11 +134,22 @@ def google_search(results_count=3):
     text_obj.pack()
 
 
+def call_manage(func):
+    """Input methods for function are: Text box, clipboard. (at the moment)"""
+    text_box_value = tb_input.get()
+    if text_box_value:
+       func((text_box_value, 'tb'))
+
+    else:
+        data = cp.paste()
+        func((data, 'clipboard'))
+
+
 # Example layout
 root = tk.Tk()
 root.title("Desktop Assitant")
 
-canvas = tk.Canvas(root, height=1000, width=600, bg="#b3ffff")
+canvas = tk.Canvas(root, width=600, height=1000, bg="#b3ffff")
 canvas.pack()
 
 # Main results frame
@@ -150,20 +160,48 @@ main_frame.place(relwidth=0.65, relheight=0.8, relx=0, rely=0)
 error_frame = tk.Frame(root, bg="black")
 error_frame.place(relwidth=0.3, relheight=0.8, relx=0.7, rely=0)
 
+
+
+# load modules
+
+files = []
+for file in os.listdir("modules"):
+    if not file.startswith("__"):
+        file = file[:-3]
+        globals()[file] = importlib.import_module(f"modules.{file}")
+        files.append((file, globals()[file]))
+
+print(files)
+
+functions = []
+for file in files:
+    methods = [func for func in dir(file[1]) if not func.startswith("__")]
+    for method in methods:
+        method_full_name = file[0] + "." + method
+        exec(f"method_pointer = {method_full_name}")
+        if method not in functions and callable(method_pointer):
+            functions.append((method_full_name, method_pointer))
+print(functions)
+
+
+for function in functions:
+    btn = tk.Button(root, text=function[0], padx=50, pady=10, command=partial(call_manage, function[1]))
+    btn.pack()
+
+
 # Buttons
-check_mac = tk.Button(root, text="Check MAC Address", padx=50, pady=10, command=mac_search)
-check_mac.pack()
+# check_mac = tk.Button(root, text="Check MAC Address", padx=50, pady=10, command=partial(call_manage, 'mac_search'))
+# check_mac.pack()
+#
+# check_ip = tk.Button(root, text="Check IP", padx=50, pady=10, command=partial(call_manage, 'ip_search'))
+# check_ip.pack()
+#
+# google = tk.Button(root, text="Google", padx=50, pady=10, command=partial(call_manage, 'google_search'))
+# google.pack()
 
-check_ip = tk.Button(root, text="Check IP", padx=50, pady=10, command=ip_search)
-check_ip.pack()
-
-check_ip = tk.Button(root, text="Google", padx=50, pady=10, command=google_search)
-check_ip.pack()
-
-tb_input = tk.Entry(root, width=30, )
+# input text box
+tb_input = tk.Entry(root, width=30)
 tb_input.place(x=10, y=1060)
 
 root.geometry("+1300+0")
-
 root.mainloop()
-
