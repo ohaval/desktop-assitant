@@ -6,9 +6,10 @@ import ipaddress
 
 class Assitant:
     IP_REGEX = r"(?:\d{1,3}\.){3}\d{1,3}"
-    MAC_REGEX = "(?:[0-9A-Fa-f]{2}[:-]){5}(?:[0-9A-Fa-f]{2})"
+    MAC_REGEX = r"(?:[0-9A-Fa-f]{2}[:-]){5}(?:[0-9A-Fa-f]{2})"
     NORMAL_REQUEST_HEADERS = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like\
                                              Gecko) Chrome/80.0.3987.163 Safari/537.36"}
+    HTTP_OK = 200
     ERRORS_ALIVE_TIME = 15000
 
     def __init__(self):
@@ -69,7 +70,6 @@ class Assitant:
         elif key == "ip":
             matches = re.findall(Assitant.IP_REGEX, data)
             matches = set(ip for ip in matches if not ipaddress.ip_address(ip).is_private)
-            # matches2 = set(filter(lambda ip: False if ipaddress.ip_address(ip).is_private else True, matches))
 
         elif key == "mac":
             matches = set(re.findall(Assitant.MAC_REGEX, data))

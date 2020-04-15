@@ -1,4 +1,5 @@
-from ..assitant import Assitant
+import sys; sys.path.append("..")
+from assitant import Assitant
 from modules.websites_interaction_files.IP import IP
 
 import tkinter as tk
@@ -34,13 +35,13 @@ class WebsiteInteraction(Assitant):
                 if text:
                     text += "\n"
 
-                page = requests.get(WebsiteInteraction.MAC_URL.format(mac=mac))
-                if page.status_code != 200:
+                page = requests.get(WebsiteInteraction.MAC_URL.format(mac=mac), headers=Assitant.NORMAL_REQUEST_HEADERS)
+                if page.status_code != Assitant.HTTP_OK:
                     self.show_error(f"Response error ({page.status_code})")
                     continue
 
                 vendor = page.text
-                text += f"{mac}:\n{vendor}\n"
+                text += f"{mac}\n{vendor}\n"
 
             text_obj = tk.Text(self.main_frame, height=text.count("\n"), width=200, bg="#00ccce")
             text_obj.insert(tk.INSERT, text)
@@ -57,7 +58,7 @@ class WebsiteInteraction(Assitant):
 
                 payload = {"ip": ip}
                 page = requests.post(WebsiteInteraction.IP_URL, headers=Assitant.NORMAL_REQUEST_HEADERS, data=payload)
-                if page.status_code != 200:
+                if page.status_code != Assitant.HTTP_OK:
                     self.show_error(f"Response error ({page.status_code})")
                     continue
 
@@ -78,7 +79,7 @@ class WebsiteInteraction(Assitant):
         term = self.get_values()
 
         page = requests.get(WebsiteInteraction.GOOGLE_URL.format(term=term), headers=Assitant.NORMAL_REQUEST_HEADERS)
-        if page.status_code != 200:
+        if page.status_code != Assitant.HTTP_OK:
             self.show_error(f"Response error ({page.status_code})")
             return
 
@@ -91,7 +92,7 @@ class WebsiteInteraction(Assitant):
             if text:
                 text += "\n"
 
-            title = result.find('span', dir='ltr').text
+            title = result.find('h3', class_="LC20lb DKV0Md").text
             if len(title) > 48:
                 additional_nl += 1
 
@@ -107,5 +108,10 @@ class WebsiteInteraction(Assitant):
         text_obj.pack()
 
 
-obj = WebsiteInteraction()
-obj.start()
+def main():
+    obj = WebsiteInteraction()
+    obj.start()
+
+
+if __name__ == "__main__":
+    main()

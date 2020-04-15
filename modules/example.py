@@ -1,4 +1,5 @@
-from ..assitant import Assitant
+import sys; sys.path.append("..")
+from assitant import Assitant
 
 
 class Example(Assitant):
@@ -12,6 +13,11 @@ class Example(Assitant):
     # You can create functions here to be called.
 
 
-# Running the instance and starting the application.
-obj = Example()
-obj.start()
+def main():
+    # Running the instance and starting the application.
+    obj = Example()
+    obj.start()
+
+
+if __name__ == "__main__":
+    main()
