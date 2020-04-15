@@ -11,9 +11,8 @@ and enjoyable.
 
 ## Usage
 
-Add your own functions and design for Tkinter GUI app to the module file,
+Add your own functions and design for the Tkinter GUI app to the module file,
 and then run your module file:
-
 ```
 python <Your module file>
 ```
