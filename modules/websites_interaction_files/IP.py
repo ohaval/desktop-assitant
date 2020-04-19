@@ -17,12 +17,5 @@ class IP:
                 text += f"{'Country:'.ljust(9)}{getattr(self, attribute)}\n"
             else:
                 text += f"{(attribute + ':').ljust(9)}{getattr(self, attribute)}\n"
-        print(text)
+
         return text
-
-
-
-
-
-
-
