@@ -36,5 +36,5 @@ python websites_interaction.py
 
 A Picture from the app:
 
-![Image](../blob/master/pic_from_the_app.jpg?raw=true)
+![Image](../master/pic_from_the_app.jpg?raw=true)
 
