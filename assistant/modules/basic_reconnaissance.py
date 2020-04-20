@@ -1,11 +1,12 @@
 import json
 import tkinter as tk
+import sys; sys.path.append("..")
 
 import requests
 from bs4 import BeautifulSoup
 
-from assistant.assitant import Assitant
-from assistant.modules.websites_interaction_files.IP import IP
+from assitant import Assitant
+from basic_reconnaissance_files.IP import IP
 
 
 class WebsiteInteraction(Assitant):
@@ -18,6 +19,16 @@ class WebsiteInteraction(Assitant):
         self.add_button("Check MAC Address", self.mac_search)
         self.add_button("Check IP", self.ip_search)
         self.add_button("Google", self.google_search)
+        self.add_button("Check MAC Address", self.mac_search)
+        self.add_button("Check IP", self.ip_search)
+        self.add_button("Google", self.google_search)
+        self.add_button("Check MAC Address", self.mac_search)
+        self.add_button("Check IP", self.ip_search)
+        self.add_button("Google", self.google_search)
+        self.add_button("Check MAC Address", self.mac_search)
+        self.add_button("Check IP", self.ip_search)
+        self.add_button("Google", self.google_search)
+        self.add_button("Check MAC Address", self.mac_search)
 
         self.root.mainloop()
 

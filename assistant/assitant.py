@@ -93,22 +93,27 @@ class Assitant:
         label.after(Assitant.ERRORS_ALIVE_TIME, label.destroy)
 
     def add_button(self, text, func):
+        if self.screen_size[1] < 1140:
+            pady = 0.035
+        else:
+            pady = 0.03
+
         self.buttons += 1
         if self.buttons <= 5:
             relx = 0
-            rely = 0.805 + ((self.buttons - 1) % 5) * 0.03
+            rely = 0.805 + ((self.buttons - 1) % 5) * pady
             width = 25
             text = text[:25]
 
         elif self.buttons <= 10:
             relx = 0.65
-            rely = 0.805 + ((self.buttons - 1) % 5) * 0.03
+            rely = 0.805 + ((self.buttons - 1) % 5) * pady
             width = 25
             text = text[:25]
 
         elif self.buttons <= 13:
             relx = 0.38
-            rely = 0.805 + ((self.buttons + 1) % 5) * 0.03
+            rely = 0.805 + ((self.buttons + 1) % 5) * pady
             width = 16
             text = text[:16]
 

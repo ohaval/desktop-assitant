@@ -1,4 +1,6 @@
-from assistant.assitant import Assitant
+import sys; sys.path.append("..")
+
+from assitant import Assitant
 
 
 class Example(Assitant):
