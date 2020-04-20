@@ -15,7 +15,7 @@ and enjoyable.
 git clone https://github.com/ohaval/desktop-assitant.git
 cd desktop-assitant/
 pip install -r requirements.txt
-cd modules/
+cd assistant/modules/
 ```
 
 Create a module file and add your own functions and design, for the Tkinter GUI app to the module file, 
@@ -32,6 +32,6 @@ python websites_interaction.py
 ## Future Work:
 - Fix the tkinter gui design so it can work on every monitor.
 - Try pyqt5
-- Make a cleaner and quicker code, and deal with errors.  
+- Make a cleaner and quicker code, and deal with errors.
 
 

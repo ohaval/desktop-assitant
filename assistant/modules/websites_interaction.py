@@ -15,14 +15,9 @@ class WebsiteInteraction(Assitant):
     GOOGLE_MAX_RESULTS = 3
 
     def start(self):
-        btn = tk.Button(self.root, text="Check MAC Address", padx=50, pady=10, command=self.mac_search)
-        btn.pack()
-
-        btn = tk.Button(self.root, text="Check IP", padx=50, pady=10, command=self.ip_search)
-        btn.pack()
-
-        btn = tk.Button(self.root, text="Google", padx=50, pady=10, command=self.google_search)
-        btn.pack()
+        self.add_button("Check MAC Address", self.mac_search)
+        self.add_button("Check IP", self.ip_search)
+        self.add_button("Google", self.google_search)
 
         self.root.mainloop()
 

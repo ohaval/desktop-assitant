@@ -1,4 +1,4 @@
-clipboard
+requests
 bs4
 lxml
-requests
+clipboard
