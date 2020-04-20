@@ -1,12 +1,11 @@
 import json
 import tkinter as tk
-import sys; sys.path.append("..")
 
 import requests
 from bs4 import BeautifulSoup
 
-from assitant import Assitant
-from modules.websites_interaction_files.IP import IP
+from assistant.assitant import Assitant
+from assistant.modules.websites_interaction_files.IP import IP
 
 
 class WebsiteInteraction(Assitant):

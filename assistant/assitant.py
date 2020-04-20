@@ -1,7 +1,8 @@
 import tkinter as tk
-import clipboard
 import re
 import ipaddress
+
+import clipboard
 
 
 class Assitant:
