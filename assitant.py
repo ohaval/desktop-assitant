@@ -23,7 +23,7 @@ class Assitant:
         self.load_layout()
 
     def load_layout(self):
-        # GUI layout
+        # Basic GUI layout
         self.root = tk.Tk()
         self.root.title("Desktop Assitant")
 
