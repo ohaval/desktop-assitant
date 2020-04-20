@@ -34,4 +34,7 @@ python websites_interaction.py
 - Try pyqt5
 - Make a cleaner and quicker code, and deal with errors.
 
+A Picture from the app:
+
+![Image](../blob/master/pic_from_the_app.jpg?raw=true)
 

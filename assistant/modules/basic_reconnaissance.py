@@ -9,7 +9,7 @@ from assitant import Assitant
 from basic_reconnaissance_files.IP import IP
 
 
-class WebsiteInteraction(Assitant):
+class BasicReconnaissance(Assitant):
     IP_URL = "https://iplocation.com/"
     MAC_URL = "https://macvendors.com/query/{mac}"
     GOOGLE_URL = "https://www.google.com/search?q={term}"
@@ -19,16 +19,6 @@ class WebsiteInteraction(Assitant):
         self.add_button("Check MAC Address", self.mac_search)
         self.add_button("Check IP", self.ip_search)
         self.add_button("Google", self.google_search)
-        self.add_button("Check MAC Address", self.mac_search)
-        self.add_button("Check IP", self.ip_search)
-        self.add_button("Google", self.google_search)
-        self.add_button("Check MAC Address", self.mac_search)
-        self.add_button("Check IP", self.ip_search)
-        self.add_button("Google", self.google_search)
-        self.add_button("Check MAC Address", self.mac_search)
-        self.add_button("Check IP", self.ip_search)
-        self.add_button("Google", self.google_search)
-        self.add_button("Check MAC Address", self.mac_search)
 
         self.root.mainloop()
 
@@ -41,7 +31,7 @@ class WebsiteInteraction(Assitant):
                 if text:
                     text += "\n"
 
-                page = requests.get(WebsiteInteraction.MAC_URL.format(mac=mac), headers=Assitant.NORMAL_REQUEST_HEADERS)
+                page = requests.get(BasicReconnaissance.MAC_URL.format(mac=mac), headers=Assitant.NORMAL_REQUEST_HEADERS)
                 if page.status_code != Assitant.HTTP_OK:
                     self.show_error(f"Response error ({page.status_code})")
                     continue
@@ -63,7 +53,7 @@ class WebsiteInteraction(Assitant):
                     text += "\n"
 
                 payload = {"ip": ip}
-                page = requests.post(WebsiteInteraction.IP_URL, headers=Assitant.NORMAL_REQUEST_HEADERS, data=payload)
+                page = requests.post(BasicReconnaissance.IP_URL, headers=Assitant.NORMAL_REQUEST_HEADERS, data=payload)
                 if page.status_code != Assitant.HTTP_OK:
                     self.show_error(f"Response error ({page.status_code})")
                     continue
@@ -84,13 +74,13 @@ class WebsiteInteraction(Assitant):
     def google_search(self):
         term = self.get_values()
 
-        page = requests.get(WebsiteInteraction.GOOGLE_URL.format(term=term), headers=Assitant.NORMAL_REQUEST_HEADERS)
+        page = requests.get(BasicReconnaissance.GOOGLE_URL.format(term=term), headers=Assitant.NORMAL_REQUEST_HEADERS)
         if page.status_code != Assitant.HTTP_OK:
             self.show_error(f"Response error ({page.status_code})")
             return
 
         soup = BeautifulSoup(page.content, 'lxml')
-        results = soup.find_all('div', class_='r')[:WebsiteInteraction.GOOGLE_MAX_RESULTS]
+        results = soup.find_all('div', class_='r')[:BasicReconnaissance.GOOGLE_MAX_RESULTS]
 
         text = ""
         additional_nl = 0
@@ -115,7 +105,7 @@ class WebsiteInteraction(Assitant):
 
 
 def main():
-    obj = WebsiteInteraction()
+    obj = BasicReconnaissance()
     obj.start()
 
 
