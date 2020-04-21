@@ -90,7 +90,7 @@ Gecko) Chrome/80.0.3987.163 Safari/537.36"}
         return matches
 
     def show_error(self, error_message):
-        label = tk.Label(self.error_frame, text=error_message, bg="black", fg="red")
+        label = tk.Label(self.error_frame, text=error_message, relief=tk.RAISED, bg="black", fg="red")
         label.pack()
         label.after(Assitant.ERRORS_ALIVE_TIME, label.destroy)
 

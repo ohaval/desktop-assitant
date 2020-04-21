@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 
 import _set_path
-from assitant import Assitant
+from assistant.assitant import Assitant
 from basic_reconnaissance_files.IP import IP
 
 

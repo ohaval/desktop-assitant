@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 import _set_path
-from assitant import Assitant
+from assistant.assitant import Assitant
 
 
 class Weather(Assitant):

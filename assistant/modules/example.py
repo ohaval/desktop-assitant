@@ -1,7 +1,7 @@
 
 import _set_path
 
-from assitant import Assitant
+from assistant.assitant import Assitant
 
 
 class Example(Assitant):
