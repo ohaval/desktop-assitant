@@ -1,4 +1,5 @@
-import sys; sys.path.append("..")
+
+import _set_path
 
 from assitant import Assitant
 

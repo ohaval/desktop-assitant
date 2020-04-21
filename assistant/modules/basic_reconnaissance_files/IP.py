@@ -3,11 +3,12 @@ class IP:
         for key, value in ip_data.items():
             setattr(self, key, value)
 
-    def summary(self, level="Minimal"):
-        if level == "Minimal":
-            attributes = ["ip", "country_name", "isp", "company", "city"]
+    def summary(self, level=0):
+        if level == 1:
+            # All attributes
+            attributes = self.__dict__.keys()
         else:
-            attributes = []
+            attributes = ["ip", "country_name", "isp", "company", "city"]
 
         text = ""
         for attribute in attributes:

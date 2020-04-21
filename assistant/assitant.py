@@ -8,12 +8,14 @@ import clipboard
 class Assitant:
     WINDOW_WIDTH = 576
     TITLE = "Desktop Assitant"
+    ERRORS_ALIVE_TIME = 15000
+    TEXT_BG_COLOR = "#00ccce"
+
     IP_REGEX = r"(?:\d{1,3}\.){3}\d{1,3}"
     MAC_REGEX = r"(?:[0-9A-Fa-f]{2}[:-]){5}(?:[0-9A-Fa-f]{2})"
-    NORMAL_REQUEST_HEADERS = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like\
-                                             Gecko) Chrome/80.0.3987.163 Safari/537.36"}
+    NORMAL_REQUEST_HEADERS = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like \
+Gecko) Chrome/80.0.3987.163 Safari/537.36"}
     HTTP_OK = 200
-    ERRORS_ALIVE_TIME = 15000
 
     def __init__(self):
         self.screen_size = None
@@ -123,3 +125,8 @@ class Assitant:
         btn = tk.Button(self.root, text=text, padx=5, pady=5, command=func, width=width)
         btn.place(relx=relx, rely=rely)
 
+    def add_text_to_main_frame(self, text, height, bg=TEXT_BG_COLOR):
+        text_obj = tk.Text(self.main_frame, height=height, width=200, bg=bg)
+        text_obj.insert(tk.INSERT, text)
+        text_obj.pack()
+        return text_obj
