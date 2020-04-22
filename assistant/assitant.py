@@ -6,8 +6,7 @@ import clipboard
 
 
 class Assitant:
-    WINDOW_WIDTH = 576
-    WINDOW_HEIGHT = 1080
+    WINDOW_WIDTH, WINDOW_HEIGHT = 576, 1000
     TITLE = "Desktop Assitant"
     ERRORS_ALIVE_TIME = 15000
     TEXT_BG_COLOR = "#00ccce"

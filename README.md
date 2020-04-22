@@ -30,7 +30,6 @@ python assitant\modules\basic_reconnaissance.py
 
 ## Future Work:
 - Fix the tkinter gui design so it can work on most monitors.
-- Try pyqt5
 - Make a cleaner and quicker code, and deal with errors.
 
 ### A Picture from the app:
@@ -38,6 +37,8 @@ python assitant\modules\basic_reconnaissance.py
 ![Image](../master/pic_from_the_app.jpg?raw=true)
 
 
+In case that the app is expanding from the screen try to edit the constants in the assitant.py file. 
+
 The app was tested on monitors with display resolutions of:
 * 1920x1200
-* 1920*1080
+* 1920x1080
