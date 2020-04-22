@@ -27,7 +27,8 @@ class BasicReconnaissance(Assitant):
         self.add_button("Google", self.google_search)
         self.add_button("Run All!", self.run_everything)
 
-        tk.Checkbutton(self.root, text="FullInfo", variable=self.check_box_value).place(relx=0.35, rely=0.805)
+        tk.Checkbutton(self.root, text="Full Info", variable=self.check_box_value).grid(row=2, column=2,
+                                                                                        sticky=tk.N + tk.S + tk.W)
 
         self.root.mainloop()
 
