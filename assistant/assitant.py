@@ -6,14 +6,16 @@ import clipboard
 
 
 class Assitant:
-    WINDOW_WIDTH = 576
+    WINDOW_WIDTH, WINDOW_HEIGHT = 576, 1000
     TITLE = "Desktop Assitant"
+    ERRORS_ALIVE_TIME = 15000
+    TEXT_BG_COLOR = "#00ccce"
+
     IP_REGEX = r"(?:\d{1,3}\.){3}\d{1,3}"
     MAC_REGEX = r"(?:[0-9A-Fa-f]{2}[:-]){5}(?:[0-9A-Fa-f]{2})"
-    NORMAL_REQUEST_HEADERS = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like\
-                                             Gecko) Chrome/80.0.3987.163 Safari/537.36"}
+    NORMAL_REQUEST_HEADERS = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like \
+Gecko) Chrome/80.0.3987.163 Safari/537.36"}
     HTTP_OK = 200
-    ERRORS_ALIVE_TIME = 15000
 
     def __init__(self):
         self.screen_size = None
@@ -30,21 +32,26 @@ class Assitant:
         # Basic GUI layout
         self.root = tk.Tk()
         self.screen_size = (self.root.winfo_screenwidth(), self.root.winfo_screenheight())
+        self.root.maxsize(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
 
         self.root.title(self.TITLE)
-        self.root.configure(width=self.WINDOW_WIDTH, height=int(self.screen_size[1]), bg='skyblue')
+        self.root.configure(width=self.WINDOW_WIDTH, height=self.WINDOW_HEIGHT, bg='skyblue')
 
         # Main results frame
-        self.main_frame = tk.Frame(self.root, bg="#00cccc")
-        self.main_frame.place(relwidth=0.65, relheight=0.8, relx=0, rely=0)
+        self.main_frame = tk.Frame(self.root, width=int(self.WINDOW_WIDTH * 0.65), height=int(self.WINDOW_HEIGHT * 0.7),
+                                   bg="#00cccc")
+        self.main_frame.grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=tk.N+tk.S+tk.E+tk.W)
+        self.main_frame.grid_propagate(False)
 
         # Errors frame
-        self.error_frame = tk.Frame(self.root, bg="black")
-        self.error_frame.place(relwidth=0.3, relheight=0.8, relx=0.7, rely=0)
+        self.error_frame = tk.Frame(self.root, width=int(self.WINDOW_WIDTH * 0.3), height=int(self.WINDOW_HEIGHT * 0.7),
+                                    bg="black")
+        self.error_frame.grid(row=0, column=2, padx=5, pady=5, sticky=tk.N+tk.S+tk.E+tk.W)
+        self.error_frame.grid_propagate(False)
 
         # input text box
-        self.tb_input = tk.Entry(self.root, width=int(self.WINDOW_WIDTH * 0.048))
-        self.tb_input.place(relx=0.35, rely=0.83)
+        self.tb_input = tk.Entry(self.root)
+        self.tb_input.grid(row=1, column=2, sticky=tk.N+tk.S+tk.E+tk.W, padx=5, pady=5)
 
         self.root.geometry(f"+{self.screen_size[0] - self.WINDOW_WIDTH}+0")
 
@@ -88,38 +95,25 @@ class Assitant:
         return matches
 
     def show_error(self, error_message):
-        label = tk.Label(self.error_frame, text=error_message, bg="black", fg="red")
-        label.pack()
+        # Fixing lines that are longer than 23 characters, in order to fit in the frame.
+        error_message = "\n".join(re.findall(".{1,23}", error_message.replace("\n", " ")))
+
+        label = tk.Label(self.error_frame, text=error_message, relief=tk.RAISED, bg="black", fg="red")
+        label.grid(sticky=tk.N+tk.S+tk.E+tk.W)
         label.after(Assitant.ERRORS_ALIVE_TIME, label.destroy)
 
     def add_button(self, text, func):
-        if self.screen_size[1] < 1140:
-            pady = 0.035
-        else:
-            pady = 0.03
-
-        self.buttons += 1
-        if self.buttons <= 5:
-            relx = 0
-            rely = 0.805 + ((self.buttons - 1) % 5) * pady
-            width = 25
-            text = text[:25]
-
-        elif self.buttons <= 10:
-            relx = 0.65
-            rely = 0.805 + ((self.buttons - 1) % 5) * pady
-            width = 25
-            text = text[:25]
-
-        elif self.buttons <= 13:
-            relx = 0.38
-            rely = 0.805 + ((self.buttons + 1) % 5) * pady
-            width = 16
-            text = text[:16]
-
-        else:
+        if self.buttons >= 10:
+            self.show_error("You can't add more than 10 buttons.")
             return
+        self.buttons += 1
 
-        btn = tk.Button(self.root, text=text, padx=5, pady=5, command=func, width=width)
-        btn.place(relx=relx, rely=rely)
+        btn = tk.Button(self.root, text=text, padx=2, pady=2, command=func)
+        btn.grid(row=(self.buttons - 1) % 5 + 1, column=int(self.buttons / 6), sticky=tk.N+tk.S+tk.E+tk.W, padx=5,
+                 pady=1)
 
+    def add_text_to_main_frame(self, text, height, bg=TEXT_BG_COLOR):
+        text_obj = tk.Text(self.main_frame, height=height, width=50, bg=bg)
+        text_obj.insert(tk.INSERT, text)
+        text_obj.grid(sticky=tk.N+tk.S+tk.E+tk.W)
+        return text_obj
