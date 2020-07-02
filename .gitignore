@@ -3,3 +3,4 @@ __pycache__
 draft/
 tmp*
 *.docx
+venv/
